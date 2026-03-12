@@ -67,7 +67,14 @@ export default function DashboardClient({
             />
           </div>
         </div>
-        <div className="ml-8">
+        <div className="ml-8 flex items-center gap-3">
+          <Link
+            href="/flashcards"
+            className="flex items-center gap-2 bg-purple-50 border border-purple-200 text-purple-700 px-4 py-2 rounded-xl font-semibold text-sm hover:bg-purple-100 transition-colors"
+          >
+            <span className="material-symbols-outlined text-base">style</span>
+            Flashcards
+          </Link>
           <button
             onClick={() => setShowImport(true)}
             className="flex items-center gap-2 bg-[#e77e23] text-white px-4 py-2 rounded-xl font-semibold text-sm hover:bg-[#cf6f1f] transition-colors"

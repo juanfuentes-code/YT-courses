@@ -90,15 +90,19 @@ model VideoProgress {
 }
 
 model Note {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  courseId    String
-  videoId     String   // YouTube video ID
-  text        String
-  timestamp   Int?     // seconds into the video (null = general note)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId       String
+  videoId        String    // YouTube video ID
+  text           String
+  timestamp      Int?      // seconds into the video (null = general note)
+  isFlashcard    Boolean   @default(false)
+  reviewDue      DateTime?
+  reviewInterval Int       @default(1) // days until next review
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@index([userId, courseId, videoId])
+  @@index([userId, isFlashcard, reviewDue])
 }

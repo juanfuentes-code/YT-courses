@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
+import "highlight.js/styles/github-dark.css";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
