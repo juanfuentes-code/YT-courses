@@ -27,7 +27,9 @@
 ### 1. Login Page
 Clean, minimalist login with Google OAuth. One-click sign-in creates your account automatically.
 
-**Add screenshot here:** `./docs/screenshots/01-login.png`
+<div align="center">
+<img src="./docs/screenshots/01-login.png" alt="Login Page" width="700">
+</div>
 
 **Key Features:**
 - Google OAuth integration
@@ -39,7 +41,9 @@ Clean, minimalist login with Google OAuth. One-click sign-in creates your accoun
 ### 2. Dashboard
 Grid layout showing all your imported courses with progress tracking and course management.
 
-**Add screenshot here:** `./docs/screenshots/02-dashboard.png`
+<div align="center">
+<img src="./docs/screenshots/02-dashboard.png" alt="Dashboard" width="700">
+</div>
 
 **Key Features:**
 - Course grid with beautiful cards
@@ -53,7 +57,9 @@ Grid layout showing all your imported courses with progress tracking and course 
 ### 3. Course Detail - Normal Mode
 Split layout with video player on left, sidebar with lessons on right. Perfect for learning with context.
 
-**Add screenshot here:** `./docs/screenshots/03-course-detail.png`
+<div align="center">
+<img src="./docs/screenshots/03-course-detail.png" alt="Course Detail Normal Mode" width="700">
+</div>
 
 **Key Features:**
 - Embedded YouTube player (16:9 aspect)
@@ -68,7 +74,9 @@ Split layout with video player on left, sidebar with lessons on right. Perfect f
 ### 4. Course Detail - Theater Mode
 Full-width video with dark immersive theme (#211811). Minimal distractions, maximum focus.
 
-**Add screenshot here:** `./docs/screenshots/04-theater-mode.png`
+<div align="center">
+<img src="./docs/screenshots/04-theater-mode.png" alt="Course Detail Theater Mode" width="700">
+</div>
 
 **Key Features:**
 - Dark immersive theme
@@ -82,7 +90,9 @@ Full-width video with dark immersive theme (#211811). Minimal distractions, maxi
 ### 5. Video Notes with Timestamps
 Capture video timestamps and create linked notes. Click timestamps to jump to that moment.
 
-**Add screenshot here:** `./docs/screenshots/05-notes-feature.png`
+<div align="center">
+<img src="./docs/screenshots/05-notes-feature.png" alt="Video Notes Feature" width="700">
+</div>
 
 **Workflow:**
 1. Click **"Timestamp"** while video plays → captures current time (e.g., `3:45`)
@@ -97,7 +107,9 @@ Capture video timestamps and create linked notes. Click timestamps to jump to th
 ### 6. Statistics Page
 Detailed per-course breakdown with progress visualization and insights.
 
-**Add screenshot here:** `./docs/screenshots/06-statistics.png`
+<div align="center">
+<img src="./docs/screenshots/06-statistics.png" alt="Statistics Page" width="700">
+</div>
 
 **Key Features:**
 - Overall progress across all courses
