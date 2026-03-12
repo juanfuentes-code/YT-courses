@@ -258,7 +258,7 @@ Note
 
 1. **Clone and install**
    ```bash
-   git clone <repo>
+   git clone https://github.com/juanfuentes-code/YT-courses.git
    cd YT-courses
    npm install
    ```
