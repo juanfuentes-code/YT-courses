@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback, useTransition, useRef } from "react";
+import { useState, useCallback, useTransition, useRef, type RefObject } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import YouTubePlayer, { type YouTubePlayerHandle } from "@/components/course/YouTubePlayer";
 import VideoNotes from "@/components/course/VideoNotes";
+import FlashcardModal from "@/components/course/FlashcardModal";
 
 interface Video {
   videoId: string;
@@ -47,6 +48,7 @@ export default function CourseDetailClient({
   const [localVideos, setLocalVideos] = useState(videos);
   const [theaterMode, setTheaterMode] = useState(initialTheater);
   const [isPending, startTransition] = useTransition();
+  const [showFlashcards, setShowFlashcards] = useState(false);
   const router = useRouter();
   const playerRef = useRef<YouTubePlayerHandle>(null);
 
@@ -83,6 +85,66 @@ export default function CourseDetailClient({
     : null;
 
 
+  return (
+    <>
+      {showFlashcards && (
+        <FlashcardModal courseId={course.id} onClose={() => setShowFlashcards(false)} />
+      )}
+      <CourseDetailInner
+        course={course}
+        videos={videos}
+        currentVideo={currentVideo}
+        theaterMode={theaterMode}
+        userName={userName}
+        userImage={userImage}
+        localVideos={localVideos}
+        watchedCount={watchedCount}
+        progressPercent={progressPercent}
+        theaterModeToggle={() => setTheaterMode((v) => !v)}
+        toggleWatched={toggleWatched}
+        setCurrentVideo={setCurrentVideo}
+        playerRef={playerRef}
+        onOpenFlashcards={() => setShowFlashcards(true)}
+        ytUrl={ytUrl}
+      />
+    </>
+  );
+}
+
+// Inner render component (avoids early return before hooks)
+function CourseDetailInner({
+  course,
+  videos: _videos,
+  currentVideo,
+  theaterMode,
+  userName: _userName,
+  userImage,
+  localVideos,
+  watchedCount,
+  progressPercent,
+  theaterModeToggle,
+  toggleWatched,
+  setCurrentVideo,
+  playerRef,
+  onOpenFlashcards,
+  ytUrl,
+}: {
+  course: { id: string; title: string; channelName?: string | null; playlistId: string; videoCount: number; watchedCount: number; progressPercent: number };
+  videos: Video[];
+  currentVideo: Video | null;
+  theaterMode: boolean;
+  userName: string;
+  userImage: string | null;
+  localVideos: Video[];
+  watchedCount: number;
+  progressPercent: number;
+  theaterModeToggle: () => void;
+  toggleWatched: (v: Video) => void;
+  setCurrentVideo: (v: Video) => void;
+  playerRef: RefObject<YouTubePlayerHandle | null>;
+  onOpenFlashcards: () => void;
+  ytUrl: string | null;
+}) {
   // Theater mode — dark immersive layout
   if (theaterMode) {
     return (
@@ -97,7 +159,14 @@ export default function CourseDetailClient({
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setTheaterMode(false)}
+              onClick={onOpenFlashcards}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-purple-500/10 text-purple-300 hover:text-purple-200 hover:bg-purple-500/20 text-sm transition-colors border border-purple-500/20"
+            >
+              <span className="material-symbols-outlined text-base">style</span>
+              <span className="hidden sm:inline">Flashcards</span>
+            </button>
+            <button
+              onClick={theaterModeToggle}
               className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 text-slate-300 hover:text-white hover:bg-white/20 text-sm transition-colors"
             >
               <span className="material-symbols-outlined text-base">view_agenda</span>
@@ -287,6 +356,7 @@ export default function CourseDetailClient({
                     dark={true}
                     getCurrentTime={() => playerRef.current?.getCurrentTime() ?? 0}
                     seekTo={(s) => playerRef.current?.seekTo(s)}
+                    onOpenFlashcards={onOpenFlashcards}
                   />
                 </div>
               </section>
@@ -312,7 +382,14 @@ export default function CourseDetailClient({
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setTheaterMode(true)}
+            onClick={onOpenFlashcards}
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-purple-700 hover:text-purple-800 bg-purple-50 border border-purple-200 rounded-xl transition-colors"
+          >
+            <span className="material-symbols-outlined text-base">style</span>
+            <span className="hidden sm:inline">Flashcards</span>
+          </button>
+          <button
+            onClick={theaterModeToggle}
             className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 hover:text-[#e77e23] bg-white border border-slate-200 rounded-xl transition-colors"
           >
             <span className="material-symbols-outlined text-base">theaters</span>
@@ -466,6 +543,7 @@ export default function CourseDetailClient({
                 dark={false}
                 getCurrentTime={() => playerRef.current?.getCurrentTime() ?? 0}
                 seekTo={(s) => playerRef.current?.seekTo(s)}
+                onOpenFlashcards={onOpenFlashcards}
               />
             )}
           </div>
