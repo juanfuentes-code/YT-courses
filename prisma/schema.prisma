@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// --- NextAuth required tables ---
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// --- App tables ---
+model User {
+  id        String    @id @default(cuid())
+  name      String?
+  email     String?   @unique
+  emailVerified DateTime?
+  image     String?
+  accounts  Account[]
+  sessions  Session[]
+  courses   Course[]
+  notes     Note[]
+  createdAt DateTime  @default(now())
+}
+
+model Course {
+  id          String          @id @default(cuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  playlistId  String          // YouTube playlist ID
+  title       String
+  description String?
+  thumbnail   String?
+  channelName String?
+  videoCount  Int             @default(0)
+  progress    VideoProgress[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@unique([userId, playlistId])
+}
+
+model VideoProgress {
+  id          String    @id @default(cuid())
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  videoId     String    // YouTube video ID
+  title       String
+  thumbnail   String?
+  duration    String?   // "HH:MM:SS" or seconds
+  position    Int       @default(0) // order in playlist
+  watched     Boolean   @default(false)
+  watchedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@unique([courseId, videoId])
+}
+
+model Note {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  videoId     String   // YouTube video ID
+  text        String
+  timestamp   Int?     // seconds into the video (null = general note)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, courseId, videoId])
+}
